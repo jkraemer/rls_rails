@@ -7,7 +7,7 @@ module RLS
   @rls_status = {user_id: '', tenant_id: '', disabled: ''}
 
   def self.disable!
-    return if RLS.status[:disable] === 'true' # do not use disabled? here since it may be blank
+    return if RLS.status[:disable] == 'true' # do not use disabled? here since it may be blank
 
     clear_query_cache
     execute_sql("SET SESSION rls.disable = TRUE;")
@@ -16,7 +16,7 @@ module RLS
   end
 
   def self.disabled?
-    execute_sql(<<-SQL.strip_heredoc).values[0][0] === true
+    execute_sql(<<-SQL.strip_heredoc).values[0][0] == true
       SELECT NULLIF(current_setting('rls.disable', TRUE), '')::BOOLEAN;
     SQL
   end
@@ -36,7 +36,7 @@ module RLS
 
   def self.set_tenant tenant
     raise "Tenant is nil!" unless tenant.present?
-    return if self.status[:tenant_id] === tenant.id&.to_s && enabled?
+    return if self.status[:tenant_id] == tenant.id&.to_s && enabled?
 
     clear_query_cache
     debug_print "Accessing database as #{tenant.name}\n"
@@ -46,7 +46,7 @@ module RLS
 
   def self.set_user user
     raise "User is nil!" unless user.present?
-    return if self.status[:user_id] === user.id&.to_s && enabled?
+    return if self.status[:user_id] == user.id&.to_s && enabled?
 
     clear_query_cache
     debug_print "Accessing database as #{user.class}##{user.id}\n"
@@ -62,7 +62,7 @@ module RLS
 
   # Resets all session variables set by this gem
   def self.reset!
-    return if self.status[:tenant_id] === '' && self.status[:user_id] === '' && self.status[:disabled] === ''
+    return if self.status[:tenant_id] == '' && self.status[:user_id] == '' && self.status[:disabled] == ''
 
     debug_print "Resetting RLS settings.\n"
     execute_sql <<-SQL
