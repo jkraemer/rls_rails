@@ -77,11 +77,12 @@ module RLS
   # Sets the RLS status to the given value in one go.
   # @param status [Hash]
   # @see #status
-  def self.status= status
+  def self.status=(status)
+    return if status == self.status
+
     tenant_id = status[:tenant_id].to_s
     user_id = status[:user_id].to_s
     disable = status[:disable].nil? ? 'false' : status[:disable].to_s
-    return if self.status[:tenant_id] === tenant_id && self.status[:user_id] === user_id && self.status[:disabled] === disable
 
     clear_query_cache
     execute_sql <<-SQL.strip_heredoc
