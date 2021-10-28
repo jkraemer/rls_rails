@@ -118,7 +118,7 @@ module RLS
   # @param tenant
   def self.set_tenant_for_block tenant, &block
     self.restore_status_after_block do
-      self.enable!
+      # self.enable! done by set_tenant
       self.set_tenant tenant
       yield tenant, block
     end
