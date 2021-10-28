@@ -3,7 +3,7 @@ require 'concurrent'
 module RLS
 
   def self.disable!
-    return if RLS.status[:disable] == 'true' # do not use disabled? here since it may be blank
+    return if self.status[:disable] == 'true' # do not use disabled? here since it may be blank
 
     clear_query_cache
     execute_sql("SET SESSION rls.disable = TRUE;")
