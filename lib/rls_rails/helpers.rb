@@ -34,7 +34,7 @@ module RLS
 
     clear_query_cache
     debug_print "Accessing database as #{tenant.name}\n"
-    execute_sql "SET SESSION rls.disable = FALSE; SET SESSION rls.tenant_id = #{tenant.id};"
+    execute_sql "SET SESSION rls.disable = FALSE; SET SESSION rls.tenant_id = '#{tenant.id}';"
   end
 
   def self.set_user user
@@ -43,7 +43,7 @@ module RLS
 
     clear_query_cache
     debug_print "Accessing database as #{user.class}##{user.id}\n"
-    execute_sql "SET SESSION rls.disable = FALSE; SET SESSION rls.user_id = #{user.id};"
+    execute_sql "SET SESSION rls.disable = FALSE; SET SESSION rls.user_id = '#{user.id}';"
   end
 
   def self.current_tenant_id
